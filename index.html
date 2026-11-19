@@ -7,23 +7,1143 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --bg-obsidian: #030305;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --glass-surface: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.095) 0%,
+        rgba(255, 255, 255, 0.025) 50%,
+        rgba(255, 255, 255, 0.065) 100%
+      );
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --glass-rim: rgba(255, 255, 255, 0.34);
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #818cf8;
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-obsidian);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 26px;
+    }
+
+    /* =========================================
+       NEXT.JS ENGINEERING GRID & LIQUID AURORA
+    ========================================= */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 0%, #090d16 0%, #030305 70%);
+    }
+
+    .nextjs-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 85% 65% at 50% 20%, #000 35%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 20%, #000 35%, transparent 100%);
+    }
+
+    .liquid-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(115px);
+      opacity: 0.46;
+      animation: liquidDrift 20s ease-in-out infinite alternate;
+    }
+
+    .blob-1 {
+      width: 580px;
+      height: 580px;
+      background: radial-gradient(circle, #38bdf8, transparent 70%);
+      top: -160px;
+      left: 10%;
+    }
+
+    .blob-2 {
+      width: 640px;
+      height: 640px;
+      background: radial-gradient(circle, #6366f1, transparent 70%);
+      top: 18%;
+      right: -140px;
+      animation-delay: -7s;
+    }
+
+    .blob-3 {
+      width: 540px;
+      height: 540px;
+      background: radial-gradient(circle, #0284c7, transparent 70%);
+      bottom: -140px;
+      left: 24%;
+      animation-delay: -13s;
+    }
+
+    @keyframes liquidDrift {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(45px, -35px) scale(1.08); }
+      100% { transform: translate(-35px, 40px) scale(0.95); }
+    }
+
+    /* =========================================
+       LIQUID GLASS SHADER SYSTEM
+    ========================================= */
+    .liquid-glass {
+      background: var(--glass-surface);
+      backdrop-filter: blur(30px) saturate(190%);
+      -webkit-backdrop-filter: blur(30px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        inset 0 1px 0 0 var(--glass-rim),
+        inset 0 0 28px rgba(255, 255, 255, 0.03),
+        0 24px 60px -15px rgba(0, 0, 0, 0.82);
+    }
+
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        520px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.13),
+        transparent 45%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    /* =========================================
+       FLOATING LIQUID GLASS NAVBAR
+    ========================================= */
+    .navbar-wrap {
+      position: sticky;
+      top: 18px;
+      z-index: 100;
+      padding: 0 22px;
+    }
+
+    .navbar {
+      max-width: 1268px;
+      margin: 0 auto;
+      padding: 12px 16px 12px 26px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .brand-orb {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      box-shadow: 0 0 14px #38bdf8;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Glass Buttons */
+    .glass-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 12px 22px;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    }
+
+    .glass-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .glass-btn-white {
+      background: rgba(255, 255, 255, 0.94);
+      color: #030305;
+      border: 1px solid #fff;
+      box-shadow: 0 8px 26px rgba(255, 255, 255, 0.18);
+    }
+
+    .glass-btn-liquid {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(129, 140, 248, 0.3));
+      backdrop-filter: blur(22px);
+      color: #fff;
+      border: 1px solid rgba(125, 211, 252, 0.5);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 12px 34px rgba(56, 189, 248, 0.24);
+    }
+
+    .glass-btn-liquid:hover {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.42), rgba(129, 140, 248, 0.42));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.52),
+        0 16px 42px rgba(56, 189, 248, 0.36);
+    }
+
+    .glass-btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(18px);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.11);
+      border-color: rgba(255, 255, 255, 0.32);
+    }
+
+    /* =========================================
+       HERO & 3D LIQUID GLASS SHOWREEL STAGE
+    ========================================= */
+    .hero {
+      padding: 60px 0 82px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 12px #38bdf8;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.45rem, 5.6vw, 4.8rem);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      margin-bottom: 28px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(125deg, #ffffff 15%, #bae6fd 55%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .hero-desc {
+      max-width: 630px;
+      color: var(--text-secondary);
+      font-size: 1.04rem;
+      line-height: 1.65;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* 3D Showreel Frame */
+    .stage-wrap {
+      perspective: 1400px;
+      margin-bottom: 22px;
+    }
+
+    .showreel-stage {
+      border-radius: var(--radius-xl);
+      padding: 12px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease-out;
+    }
+
+    .stage-chrome {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 14px 14px;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+    }
+
+    .chrome-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .chrome-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .chrome-live {
+      color: #7dd3fc;
+    }
+
+    .stage-screen {
+      position: relative;
+      aspect-ratio: 16 / 7.8;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #06080e;
+    }
+
+    .stage-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.76) contrast(1.06);
+      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+    }
+
+    .showreel-stage:hover .stage-screen img {
+      transform: scale(1.035);
+      filter: brightness(0.92);
+    }
+
+    .stage-shade {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 28%, rgba(3, 3, 5, 0.68) 100%);
+    }
+
+    .float-telemetry {
+      position: absolute;
+      z-index: 3;
+      padding: 12px 18px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tel-tl {
+      top: 22px;
+      left: 22px;
+    }
+
+    .tel-br {
+      bottom: 22px;
+      right: 22px;
+    }
+
+    .tel-num {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #7dd3fc;
+    }
+
+    .tel-lbl {
+      font-size: 0.75rem;
+      color: var(--text-primary);
+      opacity: 0.9;
+    }
+
+    .play-orb-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 32px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(26px) saturate(200%);
+      -webkit-backdrop-filter: blur(26px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 20px 50px rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .showreel-stage:hover .play-orb-btn {
+      transform: translate(-50%, -50%) scale(1.06);
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    /* 4 Pillars Grid (Jazzy Hero Adaptation) */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .pillar-card {
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(125, 211, 252, 0.48);
+    }
+
+    .pillar-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: #7dd3fc;
+      margin-bottom: 12px;
+    }
+
+    .pillar-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.12rem;
+      margin-bottom: 6px;
+    }
+
+    .pillar-card p {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+    }
+
+    /* =========================================
+       DUAL LIQUID GLASS MARQUEE
+    ========================================= */
+    .marquee-band {
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+    }
+
+    .marquee-row {
+      padding: 15px 0;
+      overflow: hidden;
+    }
+
+    .marquee-row-alt {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+    }
+
+    .scroll-left {
+      animation: marqueeLeft 34s linear infinite;
+    }
+
+    .scroll-right {
+      animation: marqueeRight 36s linear infinite;
+    }
+
+    .marquee-items {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding-right: 28px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+    }
+
+    .marquee-items i {
+      font-style: normal;
+      color: #38bdf8;
+      font-size: 0.75rem;
+    }
+
+    .marquee-row-alt .marquee-items {
+      color: var(--text-secondary);
+    }
+
+    @keyframes marqueeLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @keyframes marqueeRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* =========================================
+       PORTFOLIO BENTO GRID (JAZZY LAYOUT)
+    ========================================= */
+    .section-block {
+      padding: 96px 0;
+    }
+
+    .border-top {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 46px;
+    }
+
+    .section-kicker {
+      display: block;
+      font-size: 0.76rem;
+      color: #7dd3fc;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+
+    .filter-dock {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 6px;
+      border-radius: var(--radius-pill);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .bento-work-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 26px;
+    }
+
+    .work-card {
+      grid-column: span 6;
+      border-radius: var(--radius-xl);
+      padding: 14px;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      animation: fadeRise 0.45s ease;
+    }
+
+    .work-card:nth-child(3n + 1) {
+      grid-column: span 7;
+    }
+
+    .work-card:nth-child(3n + 2) {
+      grid-column: span 5;
+    }
+
+    .work-card:nth-child(3n + 3) {
+      grid-column: span 12;
+    }
+
+    .work-card:nth-child(3n + 3) .work-thumb {
+      aspect-ratio: 21 / 8.4;
+    }
+
+    .work-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(125, 211, 252, 0.48);
+    }
+
+    .work-thumb {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #090b10;
+      margin-bottom: 18px;
+    }
+
+    .work-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .work-card:hover .work-thumb img {
+      transform: scale(1.05);
+    }
+
+    .work-kpi-pill {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(3, 3, 5, 0.76);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(125, 211, 252, 0.38);
+      color: #7dd3fc;
+      font-size: 0.72rem;
+    }
+
+    .work-playlist-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(129, 140, 248, 0.25);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(165, 180, 252, 0.45);
+      color: #e0e7ff;
+      font-size: 0.7rem;
+    }
+
+    .work-play-glass {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.88);
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(22px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.84rem;
+      opacity: 0;
+      transition: all 0.28s ease;
+    }
+
+    .work-card:hover .work-play-glass {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .work-body {
+      padding: 0 8px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .work-body h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.26rem;
+      margin-bottom: 6px;
+    }
+
+    .work-body p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      max-width: 600px;
+    }
+
+    .work-client-tag {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      font-size: 0.72rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    /* =========================================
+       STICKY SPLIT CAPABILITIES
+    ========================================= */
+    .sticky-split {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    .sticky-sidebar {
+      position: sticky;
+      top: 105px;
+    }
+
+    .sidebar-panel {
+      padding: 36px;
+      border-radius: var(--radius-xl);
+    }
+
+    .sidebar-copy {
+      color: var(--text-secondary);
+      margin: 18px 0 30px;
+      font-size: 0.98rem;
+    }
+
+    .kpi-matrix {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .kpi-cell {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .kpi-num {
+      display: block;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #7dd3fc;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .kpi-text {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .capabilities-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cap-module {
+      padding: 30px;
+      border-radius: var(--radius-xl);
+    }
+
+    .cap-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .cap-index {
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(56, 189, 248, 0.16);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+      font-size: 0.78rem;
+    }
+
+    .cap-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+    }
+
+    .cap-module p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip-list span {
+      font-size: 0.78rem;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-primary);
+    }
+
+    /* =========================================
+       EXPERIENCE GLASS TABLE
+    ========================================= */
+    .timeline-glass {
+      border-radius: var(--radius-xl);
+      padding: 10px 32px;
+    }
+
+    .t-row {
+      display: grid;
+      grid-template-columns: 170px 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .t-row:last-child {
+      border-bottom: none;
+    }
+
+    .t-date {
+      font-size: 0.78rem;
+      color: #7dd3fc;
+    }
+
+    .t-info h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.14rem;
+      margin-bottom: 4px;
+    }
+
+    .t-info p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .t-tag {
+      font-size: 0.72rem;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary);
+    }
+
+    /* =========================================
+       LIQUID GLASS CONVERSION FOOTER
+    ========================================= */
+    .footer-section {
+      padding: 40px 0 70px;
+    }
+
+    .footer-glass-box {
+      border-radius: 32px;
+      padding: 64px 48px;
+    }
+
+    .footer-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 4.8vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 820px;
+      margin: 12px 0 20px;
+    }
+
+    .footer-lead {
+      color: var(--text-secondary);
+      max-width: 640px;
+      font-size: 1.02rem;
+      margin-bottom: 36px;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+
+    .footer-meta {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* =========================================
+       LIQUID GLASS LIGHTBOX MODAL
+    ========================================= */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 3, 6, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .lightbox-dialog {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 980px;
+      border-radius: var(--radius-xl);
+      padding: 16px;
+    }
+
+    .lb-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 10px 14px;
+    }
+
+    .lb-meta-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lb-client {
+      font-size: 0.78rem;
+      color: var(--text-primary);
+    }
+
+    .lb-kpi {
+      font-size: 0.74rem;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(56, 189, 248, 0.18);
+      border: 1px solid rgba(56, 189, 248, 0.38);
+      color: #7dd3fc;
+    }
+
+    .lb-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .lb-close:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .video-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .lb-body {
+      padding: 20px 10px 8px;
+    }
+
+    .lb-body h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+
+    .lb-body p {
+      color: var(--text-secondary);
+      font-size: 0.94rem;
+      margin-bottom: 14px;
+    }
+
+    @keyframes fadeRise {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 960px) {
+      .pillars-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .sticky-split {
+        grid-template-columns: 1fr;
+      }
+      .sticky-sidebar {
+        position: static;
+      }
+      .work-card,
+      .work-card:nth-child(3n + 1),
+      .work-card:nth-child(3n + 2),
+      .work-card:nth-child(3n + 3) {
+        grid-column: span 12;
+      }
+      .work-card:nth-child(3n + 3) .work-thumb {
+        aspect-ratio: 16 / 10;
+      }
+      .t-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .t-tag {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links, .float-telemetry {
+        display: none;
+      }
+      .pillars-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-glass-box {
+        padding: 36px 24px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Ambient Liquid Light Orbs & Next.js Engineering Grid -->
-  <div class="ambient-scene" aria-hidden="true">
-    <div class="tech-grid"></div>
-    <div class="liquid-orb orb-1"></div>
-    <div class="liquid-orb orb-2"></div>
-    <div class="liquid-orb orb-3"></div>
+  <!-- Ambient Liquid Aurora & Next.js Engineering Grid -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="nextjs-grid"></div>
+    <div class="liquid-blob blob-1"></div>
+    <div class="liquid-blob blob-2"></div>
+    <div class="liquid-blob blob-3"></div>
   </div>
 
   <!-- Floating Liquid Glass Navbar -->
   <header class="navbar-wrap">
     <nav class="navbar liquid-glass">
       <a href="#" class="brand">
-        <span class="brand-dot"></span>
+        <span class="brand-orb"></span>
         <span>KHALID AFIFI</span>
       </a>
 
@@ -34,7 +1154,7 @@
         <a href="#contact">Contact</a>
       </div>
 
-      <a href="#contact" class="glass-btn glass-btn-primary">
+      <a href="#contact" class="glass-btn glass-btn-white">
         <span>Start a Project</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
       </a>
@@ -42,103 +1162,103 @@
   </header>
 
   <main>
-    <!-- Hero Section (Jazzy Structure + Next.js Precision + Liquid Glass) -->
+    <!-- Hero Section -->
     <section class="hero">
       <div class="container">
-        <div class="hero-badge liquid-glass">
-          <span class="pulse-indicator"></span>
+        <div class="hero-pill liquid-glass">
+          <span class="live-dot"></span>
           <span class="mono">AVAILABLE FOR SELECT CAMPAIGNS &amp; CONSULTANCY // MENA &amp; GCC</span>
         </div>
 
         <h1 class="hero-title">
           Engineering High-Impact <br />
-          <span class="text-gradient">Visual Stories &amp; Motion Systems</span>
+          <span class="gradient-text">Visual Stories &amp; Motion Systems</span>
         </h1>
 
-        <div class="hero-sub-row">
+        <div class="hero-sub-bar">
           <p class="hero-desc">
-            Senior Video Editor, Motion Graphics Designer &amp; Digital Transformation Officer with 8+ years steering broadcast post-production, 2D animation, and AI-assisted workflows for Rotana, Asharq Bloomberg, Al-Arabiya, Saudi GEA, Talabat, and Bayer Pharma.
+            Senior Video Editor, Motion Graphics Designer &amp; Digital Transformation Officer with 8+ years steering broadcast post-production, 2D animation, and AI-assisted workflows for Rotana, Asharq Bloomberg, Al-Arabiya, Saudi GEA, Talabat, Hempel, and Bayer Pharma.
           </p>
 
           <div class="hero-cta">
-            <button class="glass-btn glass-btn-glow" id="openShowreelBtn">
-              <span class="play-tri">▶</span>
-              <span>Watch 2026 Showreel</span>
+            <button class="glass-btn glass-btn-liquid" id="openShowreelBtn">
+              <span>▶ Watch 2026 Showreel</span>
             </button>
-            <a href="#work" class="glass-btn glass-btn-secondary">
+            <a href="#work" class="glass-btn glass-btn-ghost">
               <span>Explore Case Studies</span>
             </a>
           </div>
         </div>
 
         <!-- 3D Interactive Liquid Glass Showreel Stage -->
-        <div class="stage-perspective">
+        <div class="stage-wrap">
           <div class="showreel-stage liquid-glass spotlight-card" id="heroShowreelStage">
-            <div class="stage-topbar">
-              <div class="window-dots">
+            <div class="stage-chrome">
+              <div class="chrome-dots">
                 <span></span><span></span><span></span>
               </div>
-              <span class="mono stage-file">MASTER_REEL_2026_4K_PRO.MOV</span>
-              <span class="mono stage-status">● READY TO STREAM</span>
+              <span class="mono">MASTER_SHOWREEL_2026_PLAYLIST.MOV</span>
+              <span class="mono chrome-live">● STREAM READY</span>
             </div>
 
-            <div class="stage-media">
-              <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1600&q=85" alt="Khalid Afifi Showreel Preview" />
-              <div class="stage-vignette"></div>
+            <div class="stage-screen">
+              <img
+                src="https://img.youtube.com/vi/Ipee2g9cHcc/hqdefault.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1600&q=85'"
+                alt="Khalid Mohamed Afifi Official Showreel"
+              />
+              <div class="stage-shade"></div>
 
-              <!-- Floating Liquid Glass Telemetry Pills -->
-              <div class="float-chip chip-top-left liquid-glass">
-                <span class="mono chip-val">-50%</span>
-                <span class="chip-lbl">Turnaround via Automation</span>
+              <div class="float-telemetry tel-tl liquid-glass">
+                <span class="mono tel-num">-50%</span>
+                <span class="tel-lbl">Turnaround via Automation</span>
               </div>
 
-              <div class="float-chip chip-bottom-right liquid-glass">
-                <span class="mono chip-val">+45%</span>
-                <span class="chip-lbl">Audience Engagement Lift</span>
+              <div class="float-telemetry tel-br liquid-glass">
+                <span class="mono tel-num">+45%</span>
+                <span class="tel-lbl">Audience Engagement Lift</span>
               </div>
 
-              <button class="center-glass-play" aria-label="Play Showreel">
-                <span class="play-ring"></span>
-                <span class="play-icon">▶</span>
-                <span class="play-text">PLAY OFFICIAL REEL</span>
+              <button class="play-orb-btn" aria-label="Play Showreel">
+                <span>▶ PLAY OFFICIAL REEL</span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- 4 Core Pillars (Jazzy Hero Grid Adaptation) -->
+        <!-- 4 Core Pillars Strip -->
         <div class="pillars-grid">
           <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="broadcast">
-            <div class="pillar-top">
+            <div class="pillar-head">
               <span class="mono">01 // BROADCAST &amp; OTT</span>
-              <span class="arrow-icon">↗</span>
+              <span>↗</span>
             </div>
-            <h3>TV &amp; Newsroom Pipelines</h3>
-            <p>Rotana Media Group, Asharq Bloomberg KSA &amp; Al-Arabiya TV</p>
-          </a>
-
-          <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="gov">
-            <div class="pillar-top">
-              <span class="mono">02 // KSA &amp; QATAR</span>
-              <span class="arrow-icon">↗</span>
-            </div>
-            <h3>GCC Gov &amp; PR Campaigns</h3>
-            <p>Saudi GEA, Ministry of Hajj &amp; Umrah &amp; Paradox Qatar</p>
+            <h3>TV &amp; Documentary Pipelines</h3>
+            <p>Asharq Bloomberg KSA, Rotana Media Group &amp; Al-Arabiya TV</p>
           </a>
 
           <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="motion">
-            <div class="pillar-top">
-              <span class="mono">03 // 2D &amp; COMMERCIAL</span>
-              <span class="arrow-icon">↗</span>
+            <div class="pillar-head">
+              <span class="mono">02 // 2D &amp; COMMERCIAL</span>
+              <span>↗</span>
             </div>
-            <h3>Motion Design &amp; Launches</h3>
-            <p>Talabat UAE (Expo 2020) &amp; Bayer Pharma Product Rollouts</p>
+            <h3>Motion &amp; Brand Campaigns</h3>
+            <p>Talabat UAE (Expo 2020), Hempel Paints &amp; Bayer Pharma</p>
+          </a>
+
+          <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="gov">
+            <div class="pillar-head">
+              <span class="mono">03 // KSA &amp; QATAR</span>
+              <span>↗</span>
+            </div>
+            <h3>GCC Gov &amp; PR Initiatives</h3>
+            <p>Saudi GEA, Ministry of Hajj &amp; Umrah &amp; Paradox Qatar</p>
           </a>
 
           <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="systems">
-            <div class="pillar-top">
+            <div class="pillar-head">
               <span class="mono">04 // ARCHITECTURE</span>
-              <span class="arrow-icon">↗</span>
+              <span>↗</span>
             </div>
             <h3>Workflow &amp; AI Automation</h3>
             <p>Cloud Media Hubs, MOGRT Scripting &amp; Digital Asset Systems</p>
@@ -147,20 +1267,20 @@
       </div>
     </section>
 
-    <!-- Dual-Direction Liquid Glass Marquee (Jazzy Hero Marquee) -->
+    <!-- Dual-Direction Liquid Glass Marquee -->
     <section class="marquee-band" aria-hidden="true">
-      <div class="marquee-line">
-        <div class="marquee-track anim-left">
-          <div class="marquee-group">
-            <span>ROTANA MEDIA GROUP</span><i>◆</i>
+      <div class="marquee-row">
+        <div class="marquee-track scroll-left">
+          <div class="marquee-items">
             <span>ASHARQ BLOOMBERG KSA</span><i>◆</i>
+            <span>ROTANA MEDIA GROUP</span><i>◆</i>
             <span>AL-ARABIYA TV</span><i>◆</i>
             <span>SAUDI GENERAL ENTERTAINMENT AUTHORITY (GEA)</span><i>◆</i>
             <span>MINISTRY OF HAJJ &amp; UMRAH</span><i>◆</i>
           </div>
-          <div class="marquee-group">
-            <span>ROTANA MEDIA GROUP</span><i>◆</i>
+          <div class="marquee-items">
             <span>ASHARQ BLOOMBERG KSA</span><i>◆</i>
+            <span>ROTANA MEDIA GROUP</span><i>◆</i>
             <span>AL-ARABIYA TV</span><i>◆</i>
             <span>SAUDI GENERAL ENTERTAINMENT AUTHORITY (GEA)</span><i>◆</i>
             <span>MINISTRY OF HAJJ &amp; UMRAH</span><i>◆</i>
@@ -168,17 +1288,19 @@
         </div>
       </div>
 
-      <div class="marquee-line marquee-line-sub">
-        <div class="marquee-track anim-right">
-          <div class="marquee-group">
+      <div class="marquee-row marquee-row-alt">
+        <div class="marquee-track scroll-right">
+          <div class="marquee-items">
             <span>TALABAT UAE</span><i>✦</i>
+            <span>HEMPEL PAINTS</span><i>✦</i>
             <span>EXPO 2020 PAVILION</span><i>✦</i>
             <span>BAYER PHARMA</span><i>✦</i>
             <span>PARADOX AGENCY QATAR</span><i>✦</i>
             <span>LEGENDS PR RIYADH</span><i>✦</i>
           </div>
-          <div class="marquee-group">
+          <div class="marquee-items">
             <span>TALABAT UAE</span><i>✦</i>
+            <span>HEMPEL PAINTS</span><i>✦</i>
             <span>EXPO 2020 PAVILION</span><i>✦</i>
             <span>BAYER PHARMA</span><i>✦</i>
             <span>PARADOX AGENCY QATAR</span><i>✦</i>
@@ -188,20 +1310,20 @@
       </div>
     </section>
 
-    <!-- Selected Work Section (Jazzy Asymmetric Editorial Grid) -->
+    <!-- Selected Work Section -->
     <section id="work" class="section-block">
       <div class="container">
         <div class="section-head">
           <div>
             <span class="mono section-kicker">(01) SELECTED PORTFOLIO</span>
-            <h2 class="section-title">Featured Case Studies</h2>
+            <h2 class="section-title">Featured Reels &amp; Case Studies</h2>
           </div>
 
           <div class="filter-dock liquid-glass" role="tablist">
             <button class="filter-btn active" data-filter="all">All Work (08)</button>
-            <button class="filter-btn" data-filter="broadcast">Broadcast &amp; TV</button>
+            <button class="filter-btn" data-filter="broadcast">Broadcast &amp; Docs</button>
+            <button class="filter-btn" data-filter="motion">2D Motion &amp; Commercial</button>
             <button class="filter-btn" data-filter="gov">GCC Gov &amp; PR</button>
-            <button class="filter-btn" data-filter="motion">2D Motion &amp; Brand</button>
             <button class="filter-btn" data-filter="systems">Workflow &amp; AI</button>
           </div>
         </div>
@@ -210,7 +1332,7 @@
       </div>
     </section>
 
-    <!-- Sticky Split Capabilities & Systems Section (Jazzy About/Parallax Split) -->
+    <!-- Sticky Split Capabilities & Systems Section -->
     <section id="capabilities" class="section-block border-top">
       <div class="container">
         <div class="sticky-split">
@@ -247,9 +1369,9 @@
             <div class="cap-module liquid-glass spotlight-card">
               <div class="cap-header">
                 <span class="mono cap-index">01</span>
-                <h3>Broadcast &amp; Narrative Post-Production</h3>
+                <h3>Broadcast &amp; Documentary Post-Production</h3>
               </div>
-              <p>High-turnaround daily financial packages, long-form documentaries, breaking news edits, and multi-channel TV promos for Rotana, Asharq Bloomberg, and Al-Arabiya.</p>
+              <p>High-turnaround daily financial packages, long-form documentaries, breaking news edits, and multi-channel TV promos for Asharq Bloomberg, Rotana, and Al-Arabiya.</p>
               <div class="chip-list">
                 <span>Adobe Premiere Pro</span>
                 <span>DaVinci Resolve</span>
@@ -262,9 +1384,9 @@
             <div class="cap-module liquid-glass spotlight-card">
               <div class="cap-header">
                 <span class="mono cap-index">02</span>
-                <h3>2D Motion Graphics &amp; Brand Systems</h3>
+                <h3>2D Motion Graphics &amp; Commercial Campaigns</h3>
               </div>
-              <p>Dynamic character animation, Expo 2020 pavilion screen loops, scientific medical explainers, and scalable on-screen lower-third packages.</p>
+              <p>Dynamic character animation, Expo 2020 pavilion screen loops, commercial brand campaigns (Talabat, Hempel Paints), and scientific medical explainers.</p>
               <div class="chip-list">
                 <span>Adobe After Effects</span>
                 <span>Illustrator</span>
@@ -338,7 +1460,7 @@
             <span class="mono t-date">2019 — PRESENT</span>
             <div class="t-info">
               <h3>PR Specialist, Digital Transformation Officer &amp; Senior Editor</h3>
-              <p>Legends PR Company — Riyadh, KSA (Saudi GEA, Ministry of Hajj &amp; Umrah &amp; GCC Entities)</p>
+              <p>Legends PR Company — Riyadh, KSA (Saudi GEA, Ministry of Hajj &amp; Umrah &amp; GCC Clients)</p>
             </div>
             <span class="mono t-tag">GOV &amp; PR</span>
           </div>
@@ -394,16 +1516,16 @@
         </p>
 
         <div class="footer-actions">
-          <button class="glass-btn glass-btn-glow" id="copyEmailBtn" data-email="Khalidmafifi@gmail.com">
+          <button class="glass-btn glass-btn-liquid" id="copyEmailBtn" data-email="Khalidmafifi@gmail.com">
             <span id="copyEmailLabel">Khalidmafifi@gmail.com — Copy Email</span>
           </button>
-          <a href="https://wa.me/201206236402" target="_blank" rel="noopener" class="glass-btn glass-btn-primary">
+          <a href="https://wa.me/201206236402" target="_blank" rel="noopener" class="glass-btn glass-btn-white">
             <span>WhatsApp (EG): +20 1206 236402 ↗</span>
           </a>
-          <a href="tel:+447455722382" class="glass-btn glass-btn-secondary">
+          <a href="tel:+447455722382" class="glass-btn glass-btn-ghost">
             <span>Intl / UK: +44 7455 722382</span>
           </a>
-          <a href="https://www.linkedin.com/in/khalidmafifi" target="_blank" rel="noopener" class="glass-btn glass-btn-secondary">
+          <a href="https://www.linkedin.com/in/khalidmafifi" target="_blank" rel="noopener" class="glass-btn glass-btn-ghost">
             <span>LinkedIn ↗</span>
           </a>
         </div>
@@ -416,7 +1538,7 @@
     </div>
   </footer>
 
-  <!-- Liquid Glass Video Lightbox Modal -->
+  <!-- Liquid Glass Video & Playlist Lightbox Modal -->
   <div class="lightbox" id="videoLightbox" aria-hidden="true">
     <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
     <div class="lightbox-dialog liquid-glass">
@@ -436,6 +1558,326 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // ==========================================
+    // 1. MASTER SHOWREEL (Your Official Showreel Link)
+    // ==========================================
+    const SHOWREEL_DATA = {
+      videoUrl: "https://www.youtube.com/watch?v=Ipee2g9cHcc&list=PLMCjumS7o1Vp992vHVekGISgWnXAEC4Gz",
+      client: "KHALID MOHAMED AFIFI — OFFICIAL SHOWREEL",
+      kpi: "8+ YEARS // MENA & GCC",
+      title: "Master Showreel 2026: Broadcast, Motion Design & Commercials",
+      description: "Official showreel playlist highlighting broadcast post-production, 2D motion graphics, documentaries, and commercial campaigns across MENA & GCC.",
+      tools: ["Premiere Pro", "After Effects", "DaVinci Resolve", "ExtendScript", "Cloud DAM"]
+    };
+
+    // ==========================================
+    // 2. PORTFOLIO PROJECTS (Your Live Links First + Resume Case Studies)
+    // ==========================================
+    const projectsData = [
+      {
+        title: "Asharq News Documentary: Italian Heritage in Jeddah",
+        category: "broadcast",
+        client: "ASHARQ BLOOMBERG — KSA",
+        kpi: "BROADCAST DOCUMENTARY",
+        duration: "05:11",
+        isPlaylist: true,
+        videoUrl: "https://www.youtube.com/watch?v=x9QhkCdmVr4&list=PLMCjumS7o1Vrkp-j2HWR8s_Mdel_LxgfZ",
+        thumbnail: "", // Auto-fetches YouTube thumbnail
+        description: "Long-form broadcast documentary feature for Asharq News (الشرق للأخبار) telling the 70-year story of an Italian family in Jeddah, adhering to global documentary standards.",
+        tools: ["Premiere Pro", "DaVinci Resolve", "Documentary Storytelling"]
+      },
+      {
+        title: "Talabat UAE & GCC: 2D Motion & Performance Reels",
+        category: "motion",
+        client: "TALABAT UAE & GCC",
+        kpi: "+40% USER ENGAGEMENT",
+        duration: "PLAYLIST",
+        isPlaylist: true,
+        videoUrl: "https://youtube.com/playlist?list=PLMCjumS7o1VrlV9f--vKaPF2u1pOCEMwQ&si=2uVKhmc45VG2Jlfu",
+        thumbnail: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+        description: "Full campaign playlist showcasing 2D character animation, Expo 2020 pavilion screen loops, and trend-driven performance marketing assets across Egypt, UAE, and the Gulf.",
+        tools: ["After Effects", "Illustrator", "2D Character Animation"]
+      },
+      {
+        title: "Hempel Paints: Commercial & Visual Campaign",
+        category: "motion",
+        client: "HEMPEL PAINTS",
+        kpi: "COMMERCIAL CAMPAIGN",
+        duration: "PLAYLIST",
+        isPlaylist: true,
+        videoUrl: "https://www.youtube.com/watch?v=uaq7kA7sHEY&list=PLMCjumS7o1VoGM2RJfoN9CgkyjmI4xsYo",
+        thumbnail: "",
+        description: "High-impact commercial video editing, color grading, and dynamic motion graphics crafted for Hempel Paints regional brand campaigns.",
+        tools: ["Premiere Pro", "After Effects", "Color Grading"]
+      },
+      {
+        title: "Official Master Showreel & Highlight Playlist",
+        category: "broadcast",
+        client: "KHALID AFIFI REEL",
+        kpi: "FULL SHOWREEL PLAYLIST",
+        duration: "REEL",
+        isPlaylist: true,
+        videoUrl: "https://www.youtube.com/watch?v=Ipee2g9cHcc&list=PLMCjumS7o1Vp992vHVekGISgWnXAEC4Gz",
+        thumbnail: "",
+        description: "Curated reel playlist spanning broadcast promos, TV graphics, commercial storytelling, and high-tempo social edits.",
+        tools: ["Premiere Pro", "After Effects", "Sound Design"]
+      },
+      {
+        title: "Rotana Media Group: Ramadan 2025 & 48h Social Sprints",
+        category: "broadcast",
+        client: "ROTANA (KHALIJIA, DRAMA, LBC)",
+        kpi: "13+ VIDEOS / 48H SPRINT",
+        duration: "CASE STUDY",
+        isPlaylist: false,
+        videoUrl: "https://www.youtube.com/watch?v=Ipee2g9cHcc&list=PLMCjumS7o1Vp992vHVekGISgWnXAEC4Gz",
+        thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80",
+        description: "Broadcast-grade promo editing and high-velocity social-first video sprints delivered across Khalijia, Drama, and LBC via a centralized Cloud Media Hub.",
+        tools: ["Premiere Pro", "After Effects", "Cloud Media Hub"]
+      },
+      {
+        title: "Saudi GEA & Ministry of Hajj and Umrah Campaigns",
+        category: "gov",
+        client: "LEGENDS PR — RIYADH, KSA",
+        kpi: "KSA NATIONAL COMPLIANCE",
+        duration: "CASE STUDY",
+        isPlaylist: false,
+        videoUrl: "https://www.youtube.com/watch?v=Ipee2g9cHcc&list=PLMCjumS7o1Vp992vHVekGISgWnXAEC4Gz",
+        thumbnail: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80",
+        description: "Strategic PR visual assets and multi-channel public sector announcements aligned with Saudi national messaging standards.",
+        tools: ["Premiere Pro", "After Effects", "PR Media Analytics"]
+      },
+      {
+        title: "Qatar Ministerial & Corporate Campaign Direction",
+        category: "gov",
+        client: "PARADOX AGENCY — QATAR",
+        kpi: "END-TO-END DIRECTION",
+        duration: "CASE STUDY",
+        isPlaylist: false,
+        videoUrl: "https://www.youtube.com/watch?v=Ipee2g9cHcc&list=PLMCjumS7o1Vp992vHVekGISgWnXAEC4Gz",
+        thumbnail: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80",
+        description: "Creative strategy, storyboarding, and remote cross-functional team leadership for high-profile governmental and corporate initiatives in Qatar.",
+        tools: ["Creative Direction", "Storyboarding", "Multi-Platform Delivery"]
+      },
+      {
+        title: "Automated Broadcast Templates & Cloud DAM Systems",
+        category: "systems",
+        client: "DIGITAL TRANSFORMATION",
+        kpi: "-50% TURNAROUND TIME",
+        duration: "SYSTEMS",
+        isPlaylist: false,
+        videoUrl: "https://www.youtube.com/watch?v=Ipee2g9cHcc&list=PLMCjumS7o1Vp992vHVekGISgWnXAEC4Gz",
+        thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+        description: "Custom-programmed responsive visual overlay templates, dynamic script automation, and centralized Cloud Asset Hubs built for Bayer Pharma & Asharq Bloomberg.",
+        tools: ["ExtendScript", "MOGRT Templates", "Cloud DAM", "AI Pipelines"]
+      }
+    ];
+
+    // ==========================================
+    // 3. SMART YOUTUBE VIDEO & PLAYLIST PARSER
+    // ==========================================
+    function parseMediaUrl(url) {
+      try {
+        const parsedUrl = new URL(url);
+        const listId = parsedUrl.searchParams.get("list");
+        let videoId = parsedUrl.searchParams.get("v");
+
+        if (!videoId) {
+          const shortMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+          if (shortMatch) videoId = shortMatch[1];
+        }
+
+        // Case A: Video + Playlist
+        if (videoId && listId) {
+          return {
+            embedUrl: `https://www.youtube.com/embed/${videoId}?list=${listId}&autoplay=1&rel=0`,
+            autoThumb: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+          };
+        }
+
+        // Case B: Pure YouTube Playlist
+        if (!videoId && listId) {
+          return {
+            embedUrl: `https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1&rel=0`,
+            autoThumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80"
+          };
+        }
+
+        // Case C: Single YouTube Video
+        if (videoId) {
+          return {
+            embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`,
+            autoThumb: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+          };
+        }
+
+        // Case D: Vimeo
+        const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+        if (vimeoMatch) {
+          return {
+            embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`,
+            autoThumb: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80"
+          };
+        }
+      } catch (err) {
+        console.error("Invalid URL:", url);
+      }
+      return null;
+    }
+
+    // ==========================================
+    // 4. CURSOR GLASS SPOTLIGHT & 3D SHOWREEL STAGE
+    // ==========================================
+    function bindSpotlightCards() {
+      document.querySelectorAll(".spotlight-card").forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+          card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+        });
+      });
+    }
+
+    const showreelStage = document.getElementById("heroShowreelStage");
+    if (showreelStage) {
+      showreelStage.addEventListener("mousemove", (e) => {
+        const rect = showreelStage.getBoundingClientRect();
+        const xPct = (e.clientX - rect.left) / rect.width - 0.5;
+        const yPct = (e.clientY - rect.top) / rect.height - 0.5;
+        showreelStage.style.transform = `rotateX(${(-yPct * 5).toFixed(2)}deg) rotateY(${(xPct * 6).toFixed(2)}deg)`;
+      });
+
+      showreelStage.addEventListener("mouseleave", () => {
+        showreelStage.style.transform = "rotateX(0deg) rotateY(0deg)";
+      });
+
+      showreelStage.addEventListener("click", () => openLightbox(SHOWREEL_DATA));
+    }
+
+    // ==========================================
+    // 5. RENDER BENTO PORTFOLIO & LIGHTBOX
+    // ==========================================
+    const projectsGrid = document.getElementById("projectsGrid");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const lightbox = document.getElementById("videoLightbox");
+    const videoContainer = document.getElementById("videoContainer");
+
+    function renderProjects(filter = "all") {
+      projectsGrid.innerHTML = "";
+
+      const filtered = filter === "all"
+        ? projectsData
+        : projectsData.filter(item => item.category === filter);
+
+      filtered.forEach(project => {
+        const parsed = parseMediaUrl(project.videoUrl);
+        const thumbSrc = project.thumbnail || (parsed ? parsed.autoThumb : "");
+
+        const card = document.createElement("article");
+        card.className = "work-card liquid-glass spotlight-card";
+        card.innerHTML = `
+          <div class="work-thumb">
+            <img
+              src="${thumbSrc}"
+              onerror="this.src='https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80'"
+              alt="${project.title}"
+              loading="lazy"
+            />
+            <span class="mono work-kpi-pill">${project.kpi}</span>
+            ${project.isPlaylist ? '<span class="mono work-playlist-badge">PLAYLIST SERIES</span>' : ''}
+            <div class="work-play-glass">▶ WATCH (${project.duration})</div>
+          </div>
+          <div class="work-body">
+            <div>
+              <h3>${project.title}</h3>
+              <p>${project.description}</p>
+            </div>
+            <span class="mono work-client-tag">${project.client}</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => openLightbox(project));
+        projectsGrid.appendChild(card);
+      });
+
+      bindSpotlightCards();
+    }
+
+    function openLightbox(item) {
+      const parsed = parseMediaUrl(item.videoUrl);
+      if (!parsed) return;
+
+      videoContainer.innerHTML = `
+        <iframe
+          src="${parsed.embedUrl}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      `;
+
+      document.getElementById("lbClient").textContent = item.client;
+      document.getElementById("lbKpi").textContent = item.kpi;
+      document.getElementById("lbTitle").textContent = item.title;
+      document.getElementById("lbDesc").textContent = item.description;
+
+      document.getElementById("lbTools").innerHTML = (item.tools || [])
+        .map(tool => `<span>${tool}</span>`)
+        .join("");
+
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      videoContainer.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderProjects(btn.dataset.filter);
+      });
+    });
+
+    document.querySelectorAll("[data-jump-filter]").forEach(link => {
+      link.addEventListener("click", () => {
+        const target = link.dataset.jumpFilter;
+        filterButtons.forEach(b => b.classList.toggle("active", b.dataset.filter === target));
+        renderProjects(target);
+      });
+    });
+
+    document.getElementById("openShowreelBtn").addEventListener("click", () => openLightbox(SHOWREEL_DATA));
+    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+    document.getElementById("lightboxBackdrop").addEventListener("click", closeLightbox);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("open")) {
+        closeLightbox();
+      }
+    });
+
+    const copyEmailBtn = document.getElementById("copyEmailBtn");
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener("click", () => {
+        const email = copyEmailBtn.dataset.email;
+        const label = document.getElementById("copyEmailLabel");
+        navigator.clipboard.writeText(email).then(() => {
+          label.textContent = "✓ Copied: " + email;
+          setTimeout(() => {
+            label.textContent = "Khalidmafifi@gmail.com — Copy Email";
+          }, 2500);
+        });
+      });
+    }
+
+    renderProjects();
+    bindSpotlightCards();
+  </script>
 </body>
 </html>
