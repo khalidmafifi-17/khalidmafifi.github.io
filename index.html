@@ -1,88 +1,437 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بورتفوليو أعمال الفيديو والموشن جرافيك</title>
+  <title>Khalid Mohamed Afifi — Senior Video Editor, Motion Designer &amp; Media Systems Director</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- الهيدر والقائمة العلوية -->
-  <header class="navbar">
-    <div class="container nav-content">
-      <a href="#" class="logo">STUDIO<span>.cut</span></a>
-      <nav class="nav-links">
-        <a href="#showreel">الشوريل</a>
-        <a href="#portfolio">الأعمال</a>
-        <a href="#contact" class="btn-outline">تواصل معي</a>
-      </nav>
-    </div>
+  <!-- Ambient Liquid Light Orbs & Next.js Engineering Grid -->
+  <div class="ambient-scene" aria-hidden="true">
+    <div class="tech-grid"></div>
+    <div class="liquid-orb orb-1"></div>
+    <div class="liquid-orb orb-2"></div>
+    <div class="liquid-orb orb-3"></div>
+  </div>
+
+  <!-- Floating Liquid Glass Navbar -->
+  <header class="navbar-wrap">
+    <nav class="navbar liquid-glass">
+      <a href="#" class="brand">
+        <span class="brand-dot"></span>
+        <span>KHALID AFIFI</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#work">Selected Work</a>
+        <a href="#capabilities">Systems &amp; Craft</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <a href="#contact" class="glass-btn glass-btn-primary">
+        <span>Start a Project</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+      </a>
+    </nav>
   </header>
 
-  <!-- القسم الرئيسي والـ Showreel -->
-  <section id="showreel" class="hero">
-    <div class="container">
-      <span class="badge">مونتاج • موشن جرافيك • إخراج بصري</span>
-      <h1>أحوّل الأفكار الخام إلى قصص بصرية تخطف الأنظار</h1>
-      <p class="subtitle">خبرة في صناعة المحتوى الإعلاني، المونتاج التلفزيوني والرقمي، وتحريك الهويات البصرية للشركات والعلامات التجارية.</p>
-      
-      <!-- مشغل الـ Showreel الرئيسي -->
-      <div class="showreel-wrapper" data-video-url="https://www.youtube.com/watch?v=aqz-KE-bpKQ">
-        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1400&q=80" alt="Showreel Cover" />
-        <div class="showreel-overlay">
-          <button class="play-btn-large" aria-label="تشغيل الشوريل">▶</button>
-          <span>شاهد ملخص الأعمال (Showreel 2026)</span>
+  <main>
+    <!-- Hero Section (Jazzy Structure + Next.js Precision + Liquid Glass) -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge liquid-glass">
+          <span class="pulse-indicator"></span>
+          <span class="mono">AVAILABLE FOR SELECT CAMPAIGNS &amp; CONSULTANCY // MENA &amp; GCC</span>
+        </div>
+
+        <h1 class="hero-title">
+          Engineering High-Impact <br />
+          <span class="text-gradient">Visual Stories &amp; Motion Systems</span>
+        </h1>
+
+        <div class="hero-sub-row">
+          <p class="hero-desc">
+            Senior Video Editor, Motion Graphics Designer &amp; Digital Transformation Officer with 8+ years steering broadcast post-production, 2D animation, and AI-assisted workflows for Rotana, Asharq Bloomberg, Al-Arabiya, Saudi GEA, Talabat, and Bayer Pharma.
+          </p>
+
+          <div class="hero-cta">
+            <button class="glass-btn glass-btn-glow" id="openShowreelBtn">
+              <span class="play-tri">▶</span>
+              <span>Watch 2026 Showreel</span>
+            </button>
+            <a href="#work" class="glass-btn glass-btn-secondary">
+              <span>Explore Case Studies</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Liquid Glass Showreel Stage -->
+        <div class="stage-perspective">
+          <div class="showreel-stage liquid-glass spotlight-card" id="heroShowreelStage">
+            <div class="stage-topbar">
+              <div class="window-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="mono stage-file">MASTER_REEL_2026_4K_PRO.MOV</span>
+              <span class="mono stage-status">● READY TO STREAM</span>
+            </div>
+
+            <div class="stage-media">
+              <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1600&q=85" alt="Khalid Afifi Showreel Preview" />
+              <div class="stage-vignette"></div>
+
+              <!-- Floating Liquid Glass Telemetry Pills -->
+              <div class="float-chip chip-top-left liquid-glass">
+                <span class="mono chip-val">-50%</span>
+                <span class="chip-lbl">Turnaround via Automation</span>
+              </div>
+
+              <div class="float-chip chip-bottom-right liquid-glass">
+                <span class="mono chip-val">+45%</span>
+                <span class="chip-lbl">Audience Engagement Lift</span>
+              </div>
+
+              <button class="center-glass-play" aria-label="Play Showreel">
+                <span class="play-ring"></span>
+                <span class="play-icon">▶</span>
+                <span class="play-text">PLAY OFFICIAL REEL</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Core Pillars (Jazzy Hero Grid Adaptation) -->
+        <div class="pillars-grid">
+          <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="broadcast">
+            <div class="pillar-top">
+              <span class="mono">01 // BROADCAST &amp; OTT</span>
+              <span class="arrow-icon">↗</span>
+            </div>
+            <h3>TV &amp; Newsroom Pipelines</h3>
+            <p>Rotana Media Group, Asharq Bloomberg KSA &amp; Al-Arabiya TV</p>
+          </a>
+
+          <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="gov">
+            <div class="pillar-top">
+              <span class="mono">02 // KSA &amp; QATAR</span>
+              <span class="arrow-icon">↗</span>
+            </div>
+            <h3>GCC Gov &amp; PR Campaigns</h3>
+            <p>Saudi GEA, Ministry of Hajj &amp; Umrah &amp; Paradox Qatar</p>
+          </a>
+
+          <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="motion">
+            <div class="pillar-top">
+              <span class="mono">03 // 2D &amp; COMMERCIAL</span>
+              <span class="arrow-icon">↗</span>
+            </div>
+            <h3>Motion Design &amp; Launches</h3>
+            <p>Talabat UAE (Expo 2020) &amp; Bayer Pharma Product Rollouts</p>
+          </a>
+
+          <a href="#work" class="pillar-card liquid-glass spotlight-card" data-jump-filter="systems">
+            <div class="pillar-top">
+              <span class="mono">04 // ARCHITECTURE</span>
+              <span class="arrow-icon">↗</span>
+            </div>
+            <h3>Workflow &amp; AI Automation</h3>
+            <p>Cloud Media Hubs, MOGRT Scripting &amp; Digital Asset Systems</p>
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- معرض الأعمال مع الفلترة -->
-  <section id="portfolio" class="portfolio-section">
-    <div class="container">
-      <div class="section-header">
-        <h2>مختارات من أعمالي</h2>
-        <!-- أزرار الفلترة -->
-        <div class="filter-buttons">
-          <button class="filter-btn active" data-filter="all">الكل</button>
-          <button class="filter-btn" data-filter="editing">مونتاج</button>
-          <button class="filter-btn" data-filter="motion">موشن جرافيك</button>
-          <button class="filter-btn" data-filter="ads">إعلانات تجارية</button>
+    <!-- Dual-Direction Liquid Glass Marquee (Jazzy Hero Marquee) -->
+    <section class="marquee-band" aria-hidden="true">
+      <div class="marquee-line">
+        <div class="marquee-track anim-left">
+          <div class="marquee-group">
+            <span>ROTANA MEDIA GROUP</span><i>◆</i>
+            <span>ASHARQ BLOOMBERG KSA</span><i>◆</i>
+            <span>AL-ARABIYA TV</span><i>◆</i>
+            <span>SAUDI GENERAL ENTERTAINMENT AUTHORITY (GEA)</span><i>◆</i>
+            <span>MINISTRY OF HAJJ &amp; UMRAH</span><i>◆</i>
+          </div>
+          <div class="marquee-group">
+            <span>ROTANA MEDIA GROUP</span><i>◆</i>
+            <span>ASHARQ BLOOMBERG KSA</span><i>◆</i>
+            <span>AL-ARABIYA TV</span><i>◆</i>
+            <span>SAUDI GENERAL ENTERTAINMENT AUTHORITY (GEA)</span><i>◆</i>
+            <span>MINISTRY OF HAJJ &amp; UMRAH</span><i>◆</i>
+          </div>
         </div>
       </div>
 
-      <!-- شبكة الفيديوهات (يتم تعبئتها تلقائياً من ملف script.js) -->
-      <div class="projects-grid" id="projectsGrid"></div>
-    </div>
-  </section>
-
-  <!-- قسم التواصل -->
-  <footer id="contact" class="footer">
-    <div class="container footer-content">
-      <h2>هل لديك مشروع قادم؟ لنصنع شيئاً مميزاً</h2>
-      <p>متاح للمشاريع المستقلة والتعاون مع الوكالات والشركات.</p>
-      <div class="contact-links">
-        <a href="https://wa.me/201000000000" target="_blank" class="btn-primary">تواصل عبر واتساب</a>
-        <a href="mailto:name@example.com" class="btn-outline">البريد الإلكتروني</a>
-        <a href="https://linkedin.com" target="_blank" class="btn-outline">LinkedIn</a>
+      <div class="marquee-line marquee-line-sub">
+        <div class="marquee-track anim-right">
+          <div class="marquee-group">
+            <span>TALABAT UAE</span><i>✦</i>
+            <span>EXPO 2020 PAVILION</span><i>✦</i>
+            <span>BAYER PHARMA</span><i>✦</i>
+            <span>PARADOX AGENCY QATAR</span><i>✦</i>
+            <span>LEGENDS PR RIYADH</span><i>✦</i>
+          </div>
+          <div class="marquee-group">
+            <span>TALABAT UAE</span><i>✦</i>
+            <span>EXPO 2020 PAVILION</span><i>✦</i>
+            <span>BAYER PHARMA</span><i>✦</i>
+            <span>PARADOX AGENCY QATAR</span><i>✦</i>
+            <span>LEGENDS PR RIYADH</span><i>✦</i>
+          </div>
+        </div>
       </div>
-      <p class="copyright">© 2026 جميع الحقوق محفوظة.</p>
+    </section>
+
+    <!-- Selected Work Section (Jazzy Asymmetric Editorial Grid) -->
+    <section id="work" class="section-block">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="mono section-kicker">(01) SELECTED PORTFOLIO</span>
+            <h2 class="section-title">Featured Case Studies</h2>
+          </div>
+
+          <div class="filter-dock liquid-glass" role="tablist">
+            <button class="filter-btn active" data-filter="all">All Work (08)</button>
+            <button class="filter-btn" data-filter="broadcast">Broadcast &amp; TV</button>
+            <button class="filter-btn" data-filter="gov">GCC Gov &amp; PR</button>
+            <button class="filter-btn" data-filter="motion">2D Motion &amp; Brand</button>
+            <button class="filter-btn" data-filter="systems">Workflow &amp; AI</button>
+          </div>
+        </div>
+
+        <div class="bento-work-grid" id="projectsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Sticky Split Capabilities & Systems Section (Jazzy About/Parallax Split) -->
+    <section id="capabilities" class="section-block border-top">
+      <div class="container">
+        <div class="sticky-split">
+          <div class="sticky-sidebar">
+            <div class="liquid-glass sidebar-panel spotlight-card">
+              <span class="mono section-kicker">(02) SYSTEMS &amp; CRAFT</span>
+              <h2 class="section-title">Creative Direction Meets Pipeline Engineering</h2>
+              <p class="sidebar-copy">
+                Beyond frame-accurate editing and 2D animation, I architect centralized Cloud Media Hubs, automated visual templates, and AI-assisted production workflows that scale output across regional broadcasters and agencies.
+              </p>
+
+              <div class="kpi-matrix">
+                <div class="kpi-cell">
+                  <span class="mono kpi-num">8+</span>
+                  <span class="kpi-text">Years in MENA &amp; GCC Media</span>
+                </div>
+                <div class="kpi-cell">
+                  <span class="mono kpi-num">-50%</span>
+                  <span class="kpi-text">Turnaround Time Saved</span>
+                </div>
+                <div class="kpi-cell">
+                  <span class="mono kpi-num">500K+</span>
+                  <span class="kpi-text">Views on Viral Features</span>
+                </div>
+                <div class="kpi-cell">
+                  <span class="mono kpi-num">300+</span>
+                  <span class="kpi-text">Motion Assets Delivered</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="capabilities-stack">
+            <div class="cap-module liquid-glass spotlight-card">
+              <div class="cap-header">
+                <span class="mono cap-index">01</span>
+                <h3>Broadcast &amp; Narrative Post-Production</h3>
+              </div>
+              <p>High-turnaround daily financial packages, long-form documentaries, breaking news edits, and multi-channel TV promos for Rotana, Asharq Bloomberg, and Al-Arabiya.</p>
+              <div class="chip-list">
+                <span>Adobe Premiere Pro</span>
+                <span>DaVinci Resolve</span>
+                <span>Final Cut Pro</span>
+                <span>Color Grading</span>
+                <span>Sound Design</span>
+              </div>
+            </div>
+
+            <div class="cap-module liquid-glass spotlight-card">
+              <div class="cap-header">
+                <span class="mono cap-index">02</span>
+                <h3>2D Motion Graphics &amp; Brand Systems</h3>
+              </div>
+              <p>Dynamic character animation, Expo 2020 pavilion screen loops, scientific medical explainers, and scalable on-screen lower-third packages.</p>
+              <div class="chip-list">
+                <span>Adobe After Effects</span>
+                <span>Illustrator</span>
+                <span>Photoshop</span>
+                <span>Blender</span>
+                <span>VFX &amp; Compositing</span>
+              </div>
+            </div>
+
+            <div class="cap-module liquid-glass spotlight-card">
+              <div class="cap-header">
+                <span class="mono cap-index">03</span>
+                <h3>Digital Transformation &amp; Workflow Automation</h3>
+              </div>
+              <p>Deploying centralized Cloud DAM/MAM hubs, interactive video recycling platforms, and scripted responsive graphic templates that cut turnaround by 50%.</p>
+              <div class="chip-list">
+                <span>Dynamic Template Scripting</span>
+                <span>Cloud Media Hubs</span>
+                <span>AI-Assisted Pipelines</span>
+                <span>Digital Asset Management</span>
+              </div>
+            </div>
+
+            <div class="cap-module liquid-glass spotlight-card">
+              <div class="cap-header">
+                <span class="mono cap-index">04</span>
+                <h3>GCC Governmental &amp; PR Campaign Leadership</h3>
+              </div>
+              <p>End-to-end creative direction, remote team orchestration, and strict national compliance delivery for ministerial initiatives in Saudi Arabia and Qatar.</p>
+              <div class="chip-list">
+                <span>KSA &amp; Qatar Compliance</span>
+                <span>Campaign Analytics</span>
+                <span>Trello / Asana / MS Teams</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Timeline Section -->
+    <section id="experience" class="section-block border-top">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="mono section-kicker">(03) TRACK RECORD</span>
+            <h2 class="section-title">Career &amp; Enterprise Roles</h2>
+          </div>
+        </div>
+
+        <div class="timeline-glass liquid-glass">
+          <div class="t-row">
+            <span class="mono t-date">2024 — 2026</span>
+            <div class="t-info">
+              <h3>Senior Video Editor &amp; Media Production Manager</h3>
+              <p>Rotana Media Group (Khalijia, Drama, LBC) — Cloud Media Hub &amp; Ramadan 2025 Campaigns</p>
+            </div>
+            <span class="mono t-tag">BROADCAST</span>
+          </div>
+
+          <div class="t-row">
+            <span class="mono t-date">2025 — PRESENT</span>
+            <div class="t-info">
+              <h3>Video Consultant &amp; Project Manager</h3>
+              <p>Paradox Agency — Qatar (Government &amp; Corporate Video Direction)</p>
+            </div>
+            <span class="mono t-tag">CONSULTANCY</span>
+          </div>
+
+          <div class="t-row">
+            <span class="mono t-date">2019 — PRESENT</span>
+            <div class="t-info">
+              <h3>PR Specialist, Digital Transformation Officer &amp; Senior Editor</h3>
+              <p>Legends PR Company — Riyadh, KSA (Saudi GEA, Ministry of Hajj &amp; Umrah &amp; GCC Entities)</p>
+            </div>
+            <span class="mono t-tag">GOV &amp; PR</span>
+          </div>
+
+          <div class="t-row">
+            <span class="mono t-date">2022 — 2024</span>
+            <div class="t-info">
+              <h3>Multimedia Designer, Video Editor &amp; Digital Transformation Officer</h3>
+              <p>Bayer Pharma — Kerendia &amp; Eylea Launches + Interactive Video Platform (+15% Market Share)</p>
+            </div>
+            <span class="mono t-tag">HEALTHCARE</span>
+          </div>
+
+          <div class="t-row">
+            <span class="mono t-date">2021 — 2022</span>
+            <div class="t-info">
+              <h3>2D Animator &amp; Motion Graphics Designer</h3>
+              <p>Talabat UAE — 300+ Performance Assets &amp; Expo 2020 Pavilion Loops (+40% Engagement)</p>
+            </div>
+            <span class="mono t-tag">2D MOTION</span>
+          </div>
+
+          <div class="t-row">
+            <span class="mono t-date">2020 — 2022</span>
+            <div class="t-info">
+              <h3>Video Editor</h3>
+              <p>Asharq Bloomberg — KSA Channel (150+ Viral Financial Reports, 500K+ Views, -50% Turnaround)</p>
+            </div>
+            <span class="mono t-tag">DOCUMENTARY</span>
+          </div>
+
+          <div class="t-row">
+            <span class="mono t-date">2018 — 2020</span>
+            <div class="t-info">
+              <h3>Video Editor</h3>
+              <p>Al-Arabiya TV — Breaking News &amp; Scalable On-Screen Graphics (+35% Digital Viewership)</p>
+            </div>
+            <span class="mono t-tag">NEWSROOM</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Oversized Liquid Glass Conversion Footer -->
+  <footer id="contact" class="footer-section">
+    <div class="container">
+      <div class="footer-glass-box liquid-glass spotlight-card">
+        <span class="mono section-kicker">(04) INITIATE COLLABORATION</span>
+        <h2 class="footer-title">Ready to Scale Your Next Visual Production?</h2>
+        <p class="footer-lead">
+          Equipped with an enterprise-grade 4K/8K rendering workstation for seamless remote, hybrid, or on-site execution across Egypt, Saudi Arabia, UAE, and Qatar.
+        </p>
+
+        <div class="footer-actions">
+          <button class="glass-btn glass-btn-glow" id="copyEmailBtn" data-email="Khalidmafifi@gmail.com">
+            <span id="copyEmailLabel">Khalidmafifi@gmail.com — Copy Email</span>
+          </button>
+          <a href="https://wa.me/201206236402" target="_blank" rel="noopener" class="glass-btn glass-btn-primary">
+            <span>WhatsApp (EG): +20 1206 236402 ↗</span>
+          </a>
+          <a href="tel:+447455722382" class="glass-btn glass-btn-secondary">
+            <span>Intl / UK: +44 7455 722382</span>
+          </a>
+          <a href="https://www.linkedin.com/in/khalidmafifi" target="_blank" rel="noopener" class="glass-btn glass-btn-secondary">
+            <span>LinkedIn ↗</span>
+          </a>
+        </div>
+
+        <div class="footer-meta">
+          <span class="mono">© 2026 KHALID MOHAMED AFIFI</span>
+          <span class="mono">NEW CAIRO • RIYADH • DUBAI • DOHA</span>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- نافذة تشغيل الفيديو المنبثقة (Lightbox) -->
-  <div class="lightbox" id="videoLightbox">
+  <!-- Liquid Glass Video Lightbox Modal -->
+  <div class="lightbox" id="videoLightbox" aria-hidden="true">
     <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
-    <div class="lightbox-content">
-      <button class="lightbox-close" id="lightboxClose" aria-label="إغلاق">&times;</button>
-      <div class="video-container" id="videoContainer"></div>
-      <div class="lightbox-info">
-        <h3 id="lightboxTitle"></h3>
-        <p id="lightboxDesc"></p>
+    <div class="lightbox-dialog liquid-glass">
+      <div class="lb-header">
+        <div class="lb-meta-group">
+          <span class="mono lb-client" id="lbClient"></span>
+          <span class="mono lb-kpi" id="lbKpi"></span>
+        </div>
+        <button class="lb-close" id="lightboxClose" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="video-frame" id="videoContainer"></div>
+      <div class="lb-body">
+        <h3 id="lbTitle"></h3>
+        <p id="lbDesc"></p>
+        <div class="chip-list" id="lbTools"></div>
       </div>
     </div>
   </div>
